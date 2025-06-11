@@ -1,0 +1,22 @@
+lex: tokens   = ('ligar', 'desligar', 'enviar_alerta', 'dispositivo', 'dispositivos', 'se', 'entao', 'set', 'observation', 'senao', 'and', 'dot', 'oplogic', 'bool', 'num', 'namedevice', 'namesensor')
+lex: literals = ''
+lex: states   = {'INITIAL': 'inclusive'}
+lex: Adding rule t_oplogic -> '<|>|>=|<=|==|!=' (state 'INITIAL')
+lex: Adding rule t_bool -> '0|1' (state 'INITIAL')
+lex: Adding rule t_num -> '[0-9]+' (state 'INITIAL')
+lex: Adding rule t_namedevice -> '[a-zA-Z][a-zA-Z]' (state 'INITIAL')
+lex: Adding rule t_namesensor -> '[a-zA-Z_][a-zA-Z0-9_]*' (state 'INITIAL')
+lex: Adding rule t_enviar_alerta -> 'enviar alerta' (state 'INITIAL')
+lex: Adding rule t_dispositivos -> 'dispositivos:' (state 'INITIAL')
+lex: Adding rule t_dispositivo -> 'dispositivo:' (state 'INITIAL')
+lex: Adding rule t_observation -> 'observation' (state 'INITIAL')
+lex: Adding rule t_desligar -> 'desligar' (state 'INITIAL')
+lex: Adding rule t_ligar -> 'ligar' (state 'INITIAL')
+lex: Adding rule t_entao -> 'entao' (state 'INITIAL')
+lex: Adding rule t_senao -> 'senao' (state 'INITIAL')
+lex: Adding rule t_set -> 'set' (state 'INITIAL')
+lex: Adding rule t_se -> 'se' (state 'INITIAL')
+lex: Adding rule t_and -> '&&' (state 'INITIAL')
+lex: Adding rule t_dot -> '\.' (state 'INITIAL')
+lex: ==== MASTER REGEXS FOLLOW ====
+lex: state 'INITIAL' : regex[0] = '(?P<t_oplogic><|>|>=|<=|==|!=)|(?P<t_bool>0|1)|(?P<t_num>[0-9]+)|(?P<t_namedevice>[a-zA-Z][a-zA-Z])|(?P<t_namesensor>[a-zA-Z_][a-zA-Z0-9_]*)|(?P<t_enviar_alerta>enviar alerta)|(?P<t_dispositivos>dispositivos:)|(?P<t_dispositivo>dispositivo:)|(?P<t_observation>observation)|(?P<t_desligar>desligar)|(?P<t_ligar>ligar)|(?P<t_entao>entao)|(?P<t_senao>senao)|(?P<t_set>set)|(?P<t_se>se)|(?P<t_and>&&)|(?P<t_dot>\.)'
