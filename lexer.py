@@ -9,6 +9,29 @@ file.write(
     """
     #include <stdio.h>
     #include <stdlib.h>
+
+    void ligar ( char* namedevice )
+    {
+        printf("%s ligado!\n", namedevice);
+    }
+    
+    void desligar ( char* namedevice )
+    {
+         printf("%s desligado!\n", namedevice);
+    }
+    
+    void alerta ( char* namedevice , char* msg )
+    {
+         printf("%s recebeu o alerta: \n", namedevice);
+         printf ("%s", msg);
+    }
+    
+    void alerta ( char* namedevice , char* msg , int var )
+    {
+        printf("%s recebeu o alerta: \n", namedevice);
+        printf ("%s %d", msg, var);
+    }
+
     
     """
 )
