@@ -3,7 +3,7 @@ from ply.yacc import yacc
 
 file = open("c_file.txt", "w")
 
-__file__ = 'lexer.c'
+__file__ = 'c_file.c'
 
 file.write(
     """
