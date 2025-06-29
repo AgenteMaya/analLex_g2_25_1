@@ -26,19 +26,30 @@ file.write(
          printf ("%s", msg);
     }
     
-    void alerta ( char* namedevice , char* msg , int var )
+    void alertaComObs ( char* namedevice , char* msg , int var )
     {
         printf("%s recebeu o alerta: \n", namedevice);
         printf ("%s %d", msg, var);
     }
 
-    
+    void alertaTodos(char** namedevices, char* msg, int qtd)
+    {
+        for (int i = 0; i < qtd; i++)
+        {
+            alerta(namedevices[i], msg);
+        }
+    }
+
+    int main(void)
+    {
+        char** vNamedevices [100] [100];
+
     """
 )
 
 reservados = (
     "ligar", "desligar", "enviar_alerta", "dispositivo", "dispositivos", "se", "entao", "set", 
-    "observation", "senao", "and", "dot", "oplogic", "bool", "num", "namedevice", "namesensor"
+    "observation", "senao", "and", "dot", "oplogic", "bool", "num", "namedevice", "namesensor", "para_todos"
     )
 
 
@@ -55,6 +66,7 @@ t_observation   = r'observation'
 t_senao         = r'senao'
 t_and           = r'&&'
 t_dot           = r'\.'
+t_para_todos    = r'para todos'
 
 def t_oplogic(t):
     r'<|>|>=|<=|==|!='
