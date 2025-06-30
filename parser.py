@@ -211,8 +211,8 @@ def p_act(p):
     ACT : ACTION namedevice
         | enviar_alerta parenteses_i msg parenteses_f namedevice
         | enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice
-        | enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
     '''
+    #        | enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
     if len(p) == 3:
         p[0] = p[1] + p[2]
     elif len(p) == 6:
@@ -236,7 +236,7 @@ with open('teste1.ObsAct', 'r') as arq:
     conteudo = arq.read()
     resultado = parser.parse(conteudo, lexer=lexer)
     c_code.append(resultado)
-    final_c_code = "\n".join(c_code)
+    final_c_code = c_code[0] + "\n  return 0;\n}\n"
 
 with open('teste1.c', 'w') as arq:
     arq.write(final_c_code)

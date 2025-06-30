@@ -41,3 +41,5 @@
         char** vNamedevices [100] [100];
 
     
+return 0;
+}
