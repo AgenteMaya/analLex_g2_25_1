@@ -53,7 +53,7 @@ c_code = [
 reservados = (
     "ligar", "desligar", "enviar_alerta", "dispositivo", "se", "entao", "set", 
     "observation", "senao", "and", "dot", "bool", "num", "namedevice", "namesensor", "para_todos", "dois_pontos",
-    "virgula", "parenteses_i", "parenteses_f", "chaves_i", "chaves_f", "igual", "msg",
+    "virgula", "parenteses_i", "parenteses_f", "chaves_i", "chaves_f", "igual", "msg", "oplogic"
     )
 
 
