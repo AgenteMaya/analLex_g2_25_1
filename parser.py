@@ -52,7 +52,8 @@ file.write(
 
 reservados = (
     "ligar", "desligar", "enviar_alerta", "dispositivo", "dispositivos", "se", "entao", "set", 
-    "observation", "senao", "and", "dot", "oplogic", "bool", "num", "namedevice", "namesensor", "para_todos", "dois_pontos"
+    "observation", "senao", "and", "dot", "oplogic", "bool", "num", "namedevice", "namesensor", "para_todos", "dois_pontos",
+    "virgula", "parenteses_i", "parenteses_f", "chaves_i", "chaves_f",
     )
 
 
@@ -71,6 +72,13 @@ t_and           = r'&&'
 t_dot           = r'\.'
 t_para_todos    = r'para todos'
 t_dois_pontos   = r':'
+t_virgula       = r','
+t_parenteses_i  = r'\('
+t_chaves_i  = r'{'
+t_parenteses_f  = r'\)'
+t_chaves_f  = r'}'
+
+
 
 def t_oplogic(t):
     r'<|>|>=|<=|==|!='
@@ -124,8 +132,8 @@ def p_devices(p):
 
 def p_device(p):
     '''
-    DEVICE : dispositivo dois_pontos {namedevice}
-           | dispositivo dois_pontos {namedevice, observation}
+    DEVICE : dispositivo dois_pontos chaves_i namedevice chaves_f
+           | dispositivo dois_pontos chaves_i namedevice virgula observation chaves_f
     '''
     if len(p) < 6:
         p[0] = "char* " + p[4] + " = " + p[4] + ";"
@@ -192,9 +200,9 @@ def p_var(p):
 def p_act(p):
     '''
     ACT : ACTION namedevice
-        | enviar alerta (msg) namedevice
-        | enviar alerta (msg, observation) namedevice
-        | enviar alerta (msg, namedevice) para todos namedevices
+        | enviar alerta parenteses_i msg parenteses_f namedevice
+        | enviar alerta parenteses_i msg virgula observation parenteses_f namedevice
+        | enviar alerta parenteses_i msg virgula namedevice parenteses_f para todos namedevices
     '''
     if len(p) == 3:
         p[0] = p[1] + p[2]
