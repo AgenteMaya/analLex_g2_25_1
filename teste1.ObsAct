@@ -1,5 +1,3 @@
-dispositivo : { Termometro , temperatura }
-dispositivo : { ventilador , potencia }
-set temperatura = 40.
-set potencia = 90.
-se temperatura > 30 entao ligar ventilador .
+dispositivo: { lampada , potencia }
+set potencia = 100.
+ligar lampada.
