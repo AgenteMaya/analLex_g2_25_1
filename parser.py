@@ -4,11 +4,11 @@ import pprint
 from ply.lex import lex
 from ply.yacc import yacc
 
-file = open("c_file.txt", "w")
+#file = open("c_file.txt", "w")
 
-__file__ = 'c_file.c'
+#__file__ = 'c_file.c'
 
-file.write(
+c_code = [
     """
     #include <stdio.h>
     #include <stdlib.h>
@@ -48,12 +48,12 @@ file.write(
         char** vNamedevices [100] [100];
 
     """
-)
+]
 
 reservados = (
-    "ligar", "desligar", "enviar_alerta", "dispositivo", "dispositivos", "se", "entao", "set", 
-    "observation", "senao", "and", "dot", "oplogic", "bool", "num", "namedevice", "namesensor", "para_todos", "dois_pontos",
-    "virgula", "parenteses_i", "parenteses_f", "chaves_i", "chaves_f",
+    "ligar", "desligar", "enviar_alerta", "dispositivo", "se", "entao", "set", 
+    "observation", "senao", "and", "dot", "bool", "num", "namedevice", "namesensor", "para_todos", "dois_pontos",
+    "virgula", "parenteses_i", "parenteses_f", "chaves_i", "chaves_f", "igual", "msg",
     )
 
 
@@ -62,23 +62,23 @@ t_ligar         = r'ligar'
 t_desligar      = r'desligar'
 t_enviar_alerta = r'enviar alerta'
 t_dispositivo   = r'dispositivo:'
-t_dispositivos  = r'dispositivos:'
+#t_dispositivos  = r'dispositivos:' acho que isso aqui n existe na gramática, adicionei errado
 t_se            = r'se'
 t_entao         = r'entao'
 t_set           = r'set'
-t_observation   = r'observation'
+t_observation   = r'[a-zA-Z_]+'
 t_senao         = r'senao'
 t_and           = r'&&'
 t_dot           = r'\.'
 t_para_todos    = r'para todos'
 t_dois_pontos   = r':'
 t_virgula       = r','
+t_igual         = r'\='
 t_parenteses_i  = r'\('
-t_chaves_i  = r'{'
+t_chaves_i      = r'{'
 t_parenteses_f  = r'\)'
-t_chaves_f  = r'}'
-
-
+t_chaves_f      = r'}'
+t_msg           = r'[a-zA-Z_]+'
 
 def t_oplogic(t):
     r'<|>|>=|<=|==|!='
@@ -123,8 +123,8 @@ def p_programm(p):
 
 def p_devices(p):
     '''
-    DEVICES : DEVICE DEVICE
-            | DEVICE DEVICES
+    DEVICES : DEVICE DEVICES
+            | DEVICE
     '''
 
     p[0] = p[1] + p[2]
@@ -200,9 +200,9 @@ def p_var(p):
 def p_act(p):
     '''
     ACT : ACTION namedevice
-        | enviar alerta parenteses_i msg parenteses_f namedevice
-        | enviar alerta parenteses_i msg virgula observation parenteses_f namedevice
-        | enviar alerta parenteses_i msg virgula namedevice parenteses_f para todos namedevices
+        | enviar_alerta parenteses_i msg parenteses_f namedevice
+        | enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice
+        | enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
     '''
     if len(p) == 3:
         p[0] = p[1] + p[2]
@@ -226,12 +226,10 @@ parser = yacc(debug=True) # construção do parser
 with open('teste1.ObsAct', 'r') as arq:
     conteudo = arq.read()
     resultado = parser.parse(conteudo, lexer=lexer)
-    file.write(resultado)
-    file.write("    return 0;\n}\n")
+    c_code.append(resultado)
+    final_c_code = "\n".join(c_code)
 
 with open('teste1.c', 'w') as arq:
-    arq.write(file.read())
+    arq.write(final_c_code)
 
-
-file.close()
 

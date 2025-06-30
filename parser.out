@@ -2,18 +2,15 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    dispositivos
     dot
-    enviar_alerta
     namesensor
-    para_todos
 
 Grammar
 
 Rule 0     S' -> PROGRAMM
 Rule 1     PROGRAMM -> DEVICES CMDS
-Rule 2     DEVICES -> DEVICE DEVICE
-Rule 3     DEVICES -> DEVICE DEVICES
+Rule 2     DEVICES -> DEVICE DEVICES
+Rule 3     DEVICES -> DEVICE
 Rule 4     DEVICE -> dispositivo dois_pontos chaves_i namedevice chaves_f
 Rule 5     DEVICE -> dispositivo dois_pontos chaves_i namedevice virgula observation chaves_f
 Rule 6     CMDS -> ATTRIB
@@ -29,9 +26,9 @@ Rule 15    OBSL -> VAR
 Rule 16    OBSL -> VAR and OBS
 Rule 17    VAR -> num bool
 Rule 18    ACT -> ACTION namedevice
-Rule 19    ACT -> enviar alerta parenteses_i msg parenteses_f namedevice
-Rule 20    ACT -> enviar alerta parenteses_i msg virgula observation parenteses_f namedevice
-Rule 21    ACT -> enviar alerta parenteses_i msg virgula namedevice parenteses_f para todos namedevices
+Rule 19    ACT -> enviar_alerta parenteses_i msg parenteses_f namedevice
+Rule 20    ACT -> enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice
+Rule 21    ACT -> enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
 Rule 22    ACTION -> ligar
 Rule 23    ACTION -> desligar
 
@@ -43,19 +40,19 @@ chaves_f             : 4 5
 chaves_i             : 4 5
 desligar             : 23
 dispositivo          : 4 5
-dispositivos         : 
 dois_pontos          : 4 5
 dot                  : 
 entao                : 12 13
-enviar_alerta        : 
+enviar_alerta        : 19 20 21
 error                : 
+igual                : 9
 ligar                : 22
+msg                  : 19 20 21
 namedevice           : 4 5 18 19 20 21
 namesensor           : 
 num                  : 17
 observation          : 5 9 14 20
-oplogic              : 14
-para_todos           : 
+para_todos           : 21
 parenteses_f         : 19 20 21
 parenteses_i         : 19 20 21
 se                   : 12 13
@@ -69,8 +66,8 @@ ACT                  : 8 12 13 13
 ACTION               : 18
 ATTRIB               : 6
 CMDS                 : 1
-DEVICE               : 2 2 3
-DEVICES              : 1 3
+DEVICE               : 2 3
+DEVICES              : 1 2
 OBS                  : 12 13 16
 OBSACT               : 7
 OBSL                 : 14
@@ -78,11 +75,6 @@ PROGRAMM             : 0
 SE                   : 10
 SES                  : 11
 VAR                  : 9 15 16
-alerta               : 19 20 21
-enviar               : 19 20 21
-igual                : 9
-msg                  : 19 20 21
 namedevices          : 21
-para                 : 21
-todos                : 21
+oplogic              : 14
 
