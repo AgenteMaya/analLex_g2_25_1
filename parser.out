@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    dot
     namesensor
 
 Grammar
@@ -13,68 +12,71 @@ Rule 2     DEVICES -> DEVICE DEVICES
 Rule 3     DEVICES -> DEVICE
 Rule 4     DEVICE -> dispositivo dois_pontos chaves_i namedevice chaves_f
 Rule 5     DEVICE -> dispositivo dois_pontos chaves_i namedevice virgula observation chaves_f
-Rule 6     CMDS -> ATTRIB
-Rule 7     CMDS -> OBSACT
-Rule 8     CMDS -> ACT
-Rule 9     ATTRIB -> set observation igual VAR
-Rule 10    OBSACT -> SE
-Rule 11    OBSACT -> SES
-Rule 12    SE -> se OBS entao ACT
-Rule 13    SES -> se OBS entao ACT senao ACT
-Rule 14    OBS -> observation oplogic OBSL
-Rule 15    OBSL -> VAR
-Rule 16    OBSL -> VAR and OBS
-Rule 17    VAR -> num bool
-Rule 18    ACT -> ACTION namedevice
-Rule 19    ACT -> enviar_alerta parenteses_i msg parenteses_f namedevice
-Rule 20    ACT -> enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice
-Rule 21    ACT -> enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
-Rule 22    ACTION -> ligar
-Rule 23    ACTION -> desligar
+Rule 6     CMDS -> CMD dot CMD
+Rule 7     CMDS -> CMD
+Rule 8     CMD -> ATTRIB
+Rule 9     CMD -> OBSACT
+Rule 10    CMD -> ACT
+Rule 11    ATTRIB -> set observation igual VAR
+Rule 12    OBSACT -> SE
+Rule 13    OBSACT -> SES
+Rule 14    SE -> se OBS entao ACT
+Rule 15    SES -> se OBS entao ACT senao ACT
+Rule 16    OBS -> observation oplogic OBSL
+Rule 17    OBSL -> VAR
+Rule 18    OBSL -> VAR and OBS
+Rule 19    VAR -> num bool
+Rule 20    ACT -> ACTION namedevice
+Rule 21    ACT -> enviar_alerta parenteses_i msg parenteses_f namedevice
+Rule 22    ACT -> enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice
+Rule 23    ACT -> enviar_alerta parenteses_i msg virgula namedevice parenteses_f para_todos namedevices
+Rule 24    ACTION -> ligar
+Rule 25    ACTION -> desligar
 
 Terminals, with rules where they appear
 
-and                  : 16
-bool                 : 17
+and                  : 18
+bool                 : 19
 chaves_f             : 4 5
 chaves_i             : 4 5
-desligar             : 23
+desligar             : 25
 dispositivo          : 4 5
 dois_pontos          : 4 5
-dot                  : 
-entao                : 12 13
-enviar_alerta        : 19 20 21
+dot                  : 6
+entao                : 14 15
+enviar_alerta        : 21 22 23
 error                : 
-igual                : 9
-ligar                : 22
-msg                  : 19 20 21
-namedevice           : 4 5 18 19 20 21
+igual                : 11
+ligar                : 24
+msg                  : 21 22 23
+namedevice           : 4 5 20 21 22 23
 namesensor           : 
-num                  : 17
-observation          : 5 9 14 20
-para_todos           : 21
-parenteses_f         : 19 20 21
-parenteses_i         : 19 20 21
-se                   : 12 13
-senao                : 13
-set                  : 9
-virgula              : 5 20 21
+num                  : 19
+observation          : 5 11 16 22
+para_todos           : 23
+parenteses_f         : 21 22 23
+parenteses_i         : 21 22 23
+se                   : 14 15
+senao                : 15
+set                  : 11
+virgula              : 5 22 23
 
 Nonterminals, with rules where they appear
 
-ACT                  : 8 12 13 13
-ACTION               : 18
-ATTRIB               : 6
+ACT                  : 10 14 15 15
+ACTION               : 20
+ATTRIB               : 8
+CMD                  : 6 6 7
 CMDS                 : 1
 DEVICE               : 2 3
 DEVICES              : 1 2
-OBS                  : 12 13 16
-OBSACT               : 7
-OBSL                 : 14
+OBS                  : 14 15 18
+OBSACT               : 9
+OBSL                 : 16
 PROGRAMM             : 0
-SE                   : 10
-SES                  : 11
-VAR                  : 9 15 16
-namedevices          : 21
-oplogic              : 14
+SE                   : 12
+SES                  : 13
+VAR                  : 11 17 18
+namedevices          : 23
+oplogic              : 16
 

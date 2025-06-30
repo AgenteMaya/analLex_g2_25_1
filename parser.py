@@ -95,7 +95,7 @@ def t_num(t):
     return
 
 def t_namedevice(t):
-    r'[a-zA-Z][a-zA-Z]'
+    r'[a-zA-Z][a-zA-Z]*'
     if t.value in reservados:
         t.type = t.value
     return t
@@ -141,10 +141,19 @@ def p_device(p):
     else:
         p[0] = "char* " + p[4] + " = " + p[4] + ";\nfloat " + p[6] + " = 0;"
 
-
 def p_cmds(p):
     '''
-    CMDS : ATTRIB
+    CMDS : CMD dot CMD
+         | CMD
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = p[1] + p[2] + p[3]
+
+def p_cmd(p):
+    '''
+    CMD : ATTRIB
          | OBSACT
          | ACT
     '''
