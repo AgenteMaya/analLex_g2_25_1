@@ -4,7 +4,6 @@ import pprint
 from ply.lex import lex
 from ply.yacc import yacc
 
-# Código base em C que será gerado, incluindo a função 'alertaTodos'
 c_code_preamble = [
     """
 #include <stdio.h>
@@ -45,10 +44,8 @@ int main(void)
 """
 ]
 
-# Lista para armazenar o código C gerado a partir dos comandos
 generated_c_code = []
 
-# Palavras reservadas e tokens
 reservados = {
     'ligar'         : 'LIGAR',
     'desligar'      : 'DESLIGAR',
@@ -66,17 +63,15 @@ reservados = {
 tokens = [
     'ID', 'NUM', 'BOOL', 'STRING',
     'OPLOGIC',
-    'DOIS_PONTOS', 'VIRGULA', 'DOT',
+    'DOIS_PONTOS', 'VIRGULA', 'PONTO',
     'PARENTESES_I', 'PARENTESES_F',
     'CHAVES_I', 'CHAVES_F',
     'IGUAL', 'AND'
 ] + list(reservados.values())
 
-
-# Expressões regulares dos tokens
 t_DOIS_PONTOS   = r':'
 t_VIRGULA       = r','
-t_DOT           = r'\.'
+t_PONTO           = r'\.'
 t_PARENTESES_I  = r'\('
 t_PARENTESES_F  = r'\)'
 t_CHAVES_I      = r'{'
@@ -86,44 +81,39 @@ t_AND           = r'&&'
 t_OPLOGIC       = r'>=|<=|==|!=|>|<'
 
 def t_BOOL(t):
-    r'TRUE|FALSE'
-    # Converte para 1 ou 0 para C
+    r'True|False'
     t.value = 1 if t.value == 'TRUE' else 0
     return t
 
 def t_NUM(t):
     r'[0-9]+'
-    # O enunciado especifica que são inteiros não negativos 
     t.value = int(t.value)
     return t
 
 def t_STRING(t):
     r'\"[^\"]*\"'
-    # Remove as aspas do valor
     t.value = t.value[1:-1]
     return t
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reservados.get(t.value, 'ID') # Verifica se é uma palavra reservada
+    t.type = reservados.get(t.value, 'ID') 
     return t
 
-t_ignore = " \t\n" # Ignorar whitespaces
+t_ignore = " \t\n" 
 
 def t_error(t):
     print("Caracter ilegal: ", t.value[0])
     t.lexer.skip(1)
 
-# Construção do Lexer
 lexer = lex(debug=False)
 
-# --- REGRAS DA GRAMÁTICA (YACC) ---
+#parser
 
 def p_programm(p):
     '''
     PROGRAMM : DEVICES CMDS
     '''
-    # Junta as declarações de dispositivos com os comandos
     p[0] = p[1] + p[2]
 
 def p_devices(p):
@@ -136,28 +126,50 @@ def p_devices(p):
     else:
         p[0] = p[1]
 
-def p_device(p):
+""" def p_device(p):
     '''
     DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I ID CHAVES_F
            | DISPOSITIVO DOIS_PONTOS CHAVES_I ID VIRGULA ID CHAVES_F
     '''
-    # Gera a declaração de variáveis em C
     if len(p) == 6:
-        # dispositivo: {namedevice}
-        # O enunciado diz que namedevice só pode conter letras [cite: 14]
         p[0] = f'    char* {p[4]} = "{p[4]}";\n'
     else:
-        # dispositivo: {namedevice, observation}
-        # Todo valor não definido deve ser zero [cite: 43]
-        # Todas as variáveis numéricas são inteiras 
-        p[0] = f'    char* {p[4]} = "{p[4]}";\n    int {p[6]} = 0;\n'
+        p[0] = f'    char* {p[4]} = "{p[4]}";\n    int {p[6]} = 0;\n' """
+
+def p_device(p):
+    '''
+    DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I COMPONENT_LIST CHAVES_F
+    '''
+    decls = []
+    for name in p[4]:
+        decls.append(f'    char* {name.replace(" ", "_")} = "{name}";')
+    p[0] = '\n'.join(decls) + '\n'
+
+def p_component_list(p):
+    '''
+    COMPONENT_LIST : COMPONENT
+                   | COMPONENT_LIST VIRGULA COMPONENT
+    '''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
+def p_component(p):
+    '''
+    COMPONENT : ID
+              | COMPONENT ID
+    '''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = f'{p[1]} {p[2]}'
 
 def p_cmds(p):
     '''
     CMDS : CMDS CMD_TERMINATED
          | CMD_TERMINATED
     '''
-    # Constrói a lista de comandos C
     if len(p) == 3:
         p[0] = p[1] + p[2]
     else:
@@ -165,9 +177,8 @@ def p_cmds(p):
         
 def p_cmd_terminated(p):
     '''
-    CMD_TERMINATED : CMD DOT
+    CMD_TERMINATED : CMD PONTO
     '''
-    # O ponto finaliza o comando, em C isso é um ';'
     p[0] = "    " + p[1] + ";\n"
 
 def p_cmd(p):
@@ -210,29 +221,40 @@ def p_var(p):
         | BOOL
         | ID
     '''
-    # A regra 'num bool' do enunciado foi corrigida conforme a permissão de alteração 
     p[0] = str(p[1])
 
 def p_act(p):
     '''
     ACT : ACTION ID
-        | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F ID
+        | ENVIAR ALERTA STRING ID
         | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F ID
         | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
+        | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
     '''
-    if len(p) == 3: # Ligar/Desligar
+    if len(p) == 3:
         p[0] = f'{p[1]}({p[2]})'
-    elif len(p) == 7: # Alerta simples: enviar alerta ("msg") device
-        p[0] = f'alerta({p[6]}, "{p[4]}")'
-    elif len(p) == 9 and p[5] == ',': # Alerta com observação: enviar alerta ("msg", obs) device
+    elif len(p) == 5:
+        p[0] = f'alerta({p[4]}, "{p[3]}")'
+    elif len(p) == 8 and p[5] == ',': 
         p[0] = f'alertaComObs({p[8]}, "{p[4]}", {p[6]})'
-    else: # Alerta broadcast: enviar alerta ("msg") para todos: dev1, dev2 ...
+    elif len(p) == 10:
         devices = p[8]
         msg = p[4]
         count = len(devices)
-        # Cria um array em C com os nomes dos dispositivos
         device_array_str = ", ".join([f'"{d}"' for d in devices])
         p[0] = f'char* broadcast_devices_{p.lineno}[] = {{ {device_array_str} }}; alertaTodos(broadcast_devices_{p.lineno}, "{msg}", {count})'
+    else:
+        # alertaComObs(msg, var) para todos
+        msg = p[4]
+        var = p[6]
+        devices = p[10]
+        count = len(devices)
+        array_name = f"broadcast_devices_{p.lineno(1)}"
+        device_array_str = ", ".join([f'"{d}"' for d in devices])
+        p[0] = (
+            f'char* {array_name}[] = {{ {device_array_str} }};\n'
+            f'    for (int i = 0; i < {count}; i++) {{ alertaComObs({array_name}[i], "{msg}", {var}); }}'
+        )
 
 def p_namedevicelist(p):
     '''
@@ -258,25 +280,20 @@ def p_error(p):
     else:
         print("Erro de sintaxe no final do arquivo!")
 
-# Construção do Parser
 parser = yacc(debug=False)
 
-# --- EXECUÇÃO ---
-# Use o arquivo 'teste1.ObsAct' como entrada
+
 try:
-    with open('teste1.ObsAct', 'r') as arq:
+    with open('teste3.ObsAct', 'r') as arq:
         conteudo = arq.read()
         resultado = parser.parse(conteudo, lexer=lexer)
         if resultado:
-            # Junta o preâmbulo C, as declarações e os comandos
             final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
-            
-            # Salva o código C final no arquivo de saída 'teste1.c'
-            with open('teste1.c', 'w') as arq_c:
+            with open('teste3_2.c', 'w') as arq_c:
                 arq_c.write(final_c_code)
-            print("Arquivo 'teste1.c' gerado com sucesso.")
+            print("Arquivo 'teste3_2.c' gerado com sucesso.")
         else:
             print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
 except FileNotFoundError:
-    print("Erro: O arquivo 'teste1.ObsAct' não foi encontrado.")
+    print("Erro: O arquivo 'teste3_2.ObsAct' não foi encontrado.")

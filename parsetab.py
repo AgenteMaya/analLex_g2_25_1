@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'and bool chaves_f chaves_i desligar dispositivo dois_pontos dot entao enviar_alerta igual ligar msg namedevice namesensor num observation oplogic para_todos parenteses_f parenteses_i se senao set virgula\n    PROGRAMM : DEVICES CMDS\n    \n    DEVICES : DEVICE DEVICES\n            | DEVICE\n    \n    DEVICE : dispositivo dois_pontos chaves_i namedevice chaves_f\n           | dispositivo dois_pontos chaves_i namedevice virgula observation chaves_f\n    \n    CMDS : CMD dot CMD\n         | CMD\n    \n    CMD : ATTRIB\n         | OBSACT\n         | ACT\n    \n    ATTRIB : set observation igual VAR\n    \n    OBSACT : SE\n           | SES\n    \n    SE : se OBS entao ACT\n    \n    SES : se OBS entao ACT senao ACT\n    \n    OBS : observation oplogic OBSL\n    \n    OBSL : VAR\n         | VAR and OBS\n    \n    VAR : num bool\n    \n    ACT : ACTION namedevice\n        | enviar_alerta parenteses_i msg parenteses_f namedevice\n        | enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice\n    \n    ACTION : ligar\n           | desligar\n    '
+_lr_signature = 'ALERTA AND BOOL CHAVES_F CHAVES_I DESLIGAR DISPOSITIVO DOIS_PONTOS ENTAO ENVIAR ID IGUAL LIGAR NUM OPLOGIC PARA PARENTESES_F PARENTESES_I PONTO SE SENAO SET STRING TODOS VIRGULA\n    PROGRAMM : DEVICES CMDS\n    \n    DEVICES : DEVICE DEVICES\n            | DEVICE\n    \n    DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I COMPONENT_LIST CHAVES_F\n    \n    COMPONENT_LIST : COMPONENT\n                   | COMPONENT_LIST VIRGULA COMPONENT\n    \n    COMPONENT : ID\n              | COMPONENT ID\n    \n    CMDS : CMDS CMD_TERMINATED\n         | CMD_TERMINATED\n    \n    CMD_TERMINATED : CMD PONTO\n    \n    CMD : ATTRIB\n        | OBSACT\n        | ACT\n    \n    ATTRIB : SET ID IGUAL VAR\n    \n    OBSACT : SE OBS ENTAO CMD_TERMINATED\n           | SE OBS ENTAO CMD_TERMINATED SENAO CMD_TERMINATED\n    \n    OBS : ID OPLOGIC VAR\n        | ID OPLOGIC VAR AND OBS\n    \n    VAR : NUM\n        | BOOL\n        | ID\n    \n    ACT : ACTION ID\n        | ENVIAR ALERTA STRING ID\n        | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F ID\n        | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST\n        | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST\n    \n    NAMEDEVICELIST : ID\n                   | NAMEDEVICELIST VIRGULA ID\n    \n    ACTION : LIGAR\n           | DESLIGAR\n    '
     
-_lr_action_items = {'dispositivo':([0,3,40,51,],[4,4,-4,-5,]),'$end':([1,5,6,7,8,9,11,12,22,27,33,37,42,43,49,52,],[0,-1,-7,-8,-9,-10,-12,-13,-20,-6,-11,-14,-19,-21,-15,-22,]),'set':([2,3,18,20,40,51,],[10,-3,-2,10,-4,-5,]),'enviar_alerta':([2,3,18,20,30,40,45,51,],[14,-3,-2,14,14,-4,14,-5,]),'se':([2,3,18,20,40,51,],[15,-3,-2,15,-4,-5,]),'ligar':([2,3,18,20,30,40,45,51,],[16,-3,-2,16,16,-4,16,-5,]),'desligar':([2,3,18,20,30,40,45,51,],[17,-3,-2,17,17,-4,17,-5,]),'dois_pontos':([4,],[19,]),'dot':([6,7,8,9,11,12,22,33,37,42,43,49,52,],[20,-8,-9,-10,-12,-13,-20,-11,-14,-19,-21,-15,-22,]),'observation':([10,15,36,41,46,],[21,25,44,47,25,]),'namedevice':([13,16,17,26,35,48,],[22,-23,-24,32,43,52,]),'parenteses_i':([14,],[23,]),'chaves_i':([19,],[26,]),'igual':([21,],[28,]),'senao':([22,37,43,52,],[-20,45,-21,-22,]),'msg':([23,],[29,]),'entao':([24,38,39,42,50,],[30,-16,-17,-19,-18,]),'oplogic':([25,],[31,]),'num':([28,31,],[34,34,]),'parenteses_f':([29,44,],[35,48,]),'virgula':([29,32,],[36,41,]),'chaves_f':([32,47,],[40,51,]),'bool':([34,],[42,]),'and':([39,42,],[46,-19,]),}
+_lr_action_items = {'DISPOSITIVO':([0,3,43,],[4,4,-4,]),'$end':([1,5,6,19,20,],[0,-1,-10,-9,-11,]),'SET':([2,3,5,6,17,19,20,28,43,46,],[11,-3,11,-10,-2,-9,-11,11,-4,11,]),'SE':([2,3,5,6,17,19,20,28,43,46,],[12,-3,12,-10,-2,-9,-11,12,-4,12,]),'ENVIAR':([2,3,5,6,17,19,20,28,43,46,],[14,-3,14,-10,-2,-9,-11,14,-4,14,]),'LIGAR':([2,3,5,6,17,19,20,28,43,46,],[15,-3,15,-10,-2,-9,-11,15,-4,15,]),'DESLIGAR':([2,3,5,6,17,19,20,28,43,46,],[16,-3,16,-10,-2,-9,-11,16,-4,16,]),'DOIS_PONTOS':([4,56,60,],[18,59,63,]),'PONTO':([7,8,9,10,20,24,35,36,37,38,39,41,51,57,61,62,65,66,],[20,-12,-13,-14,-11,-23,-22,-15,-20,-21,-16,-24,-17,-25,-26,-28,-27,-29,]),'ID':([11,12,13,15,16,26,27,29,30,33,34,44,45,47,48,50,55,59,63,64,],[21,23,24,-30,-31,34,35,35,41,45,-7,34,-8,23,53,45,57,62,62,66,]),'ALERTA':([14,],[25,]),'CHAVES_I':([18,],[26,]),'SENAO':([20,39,],[-11,46,]),'IGUAL':([21,],[27,]),'ENTAO':([22,35,37,38,40,52,],[28,-22,-20,-21,-18,-19,]),'OPLOGIC':([23,],[29,]),'STRING':([25,31,],[30,42,]),'PARENTESES_I':([25,],[31,]),'NUM':([27,29,],[37,37,]),'BOOL':([27,29,],[38,38,]),'CHAVES_F':([32,33,34,45,50,],[43,-5,-7,-8,-6,]),'VIRGULA':([32,33,34,42,45,50,61,62,65,66,],[44,-5,-7,48,-8,-6,64,-28,64,-29,]),'AND':([35,37,38,40,],[-22,-20,-21,47,]),'PARENTESES_F':([42,53,],[49,55,]),'PARA':([49,55,],[54,58,]),'TODOS':([54,58,],[56,60,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'PROGRAMM':([0,],[1,]),'DEVICES':([0,3,],[2,18,]),'DEVICE':([0,3,],[3,3,]),'CMDS':([2,],[5,]),'CMD':([2,20,],[6,27,]),'ATTRIB':([2,20,],[7,7,]),'OBSACT':([2,20,],[8,8,]),'ACT':([2,20,30,45,],[9,9,37,49,]),'SE':([2,20,],[11,11,]),'SES':([2,20,],[12,12,]),'ACTION':([2,20,30,45,],[13,13,13,13,]),'OBS':([15,46,],[24,50,]),'VAR':([28,31,],[33,39,]),'OBSL':([31,],[38,]),}
+_lr_goto_items = {'PROGRAMM':([0,],[1,]),'DEVICES':([0,3,],[2,17,]),'DEVICE':([0,3,],[3,3,]),'CMDS':([2,],[5,]),'CMD_TERMINATED':([2,5,28,46,],[6,19,39,51,]),'CMD':([2,5,28,46,],[7,7,7,7,]),'ATTRIB':([2,5,28,46,],[8,8,8,8,]),'OBSACT':([2,5,28,46,],[9,9,9,9,]),'ACT':([2,5,28,46,],[10,10,10,10,]),'ACTION':([2,5,28,46,],[13,13,13,13,]),'OBS':([12,47,],[22,52,]),'COMPONENT_LIST':([26,],[32,]),'COMPONENT':([26,44,],[33,50,]),'VAR':([27,29,],[36,40,]),'NAMEDEVICELIST':([59,63,],[61,65,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,28 +27,35 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> PROGRAMM","S'",1,None,None,None),
-  ('PROGRAMM -> DEVICES CMDS','PROGRAMM',2,'p_programm','parser.py',120),
-  ('DEVICES -> DEVICE DEVICES','DEVICES',2,'p_devices','parser.py',126),
-  ('DEVICES -> DEVICE','DEVICES',1,'p_devices','parser.py',127),
-  ('DEVICE -> dispositivo dois_pontos chaves_i namedevice chaves_f','DEVICE',5,'p_device','parser.py',135),
-  ('DEVICE -> dispositivo dois_pontos chaves_i namedevice virgula observation chaves_f','DEVICE',7,'p_device','parser.py',136),
-  ('CMDS -> CMD dot CMD','CMDS',3,'p_cmds','parser.py',146),
-  ('CMDS -> CMD','CMDS',1,'p_cmds','parser.py',147),
-  ('CMD -> ATTRIB','CMD',1,'p_cmd','parser.py',156),
-  ('CMD -> OBSACT','CMD',1,'p_cmd','parser.py',157),
-  ('CMD -> ACT','CMD',1,'p_cmd','parser.py',158),
-  ('ATTRIB -> set observation igual VAR','ATTRIB',4,'p_attrib','parser.py',164),
-  ('OBSACT -> SE','OBSACT',1,'p_obsact','parser.py',170),
-  ('OBSACT -> SES','OBSACT',1,'p_obsact','parser.py',171),
-  ('SE -> se OBS entao ACT','SE',4,'p_se','parser.py',177),
-  ('SES -> se OBS entao ACT senao ACT','SES',6,'p_ses','parser.py',183),
-  ('OBS -> observation oplogic OBSL','OBS',3,'p_obs','parser.py',189),
-  ('OBSL -> VAR','OBSL',1,'p_obsl','parser.py',195),
-  ('OBSL -> VAR and OBS','OBSL',3,'p_obsl','parser.py',196),
-  ('VAR -> num bool','VAR',2,'p_var','parser.py',205),
-  ('ACT -> ACTION namedevice','ACT',2,'p_act','parser.py',211),
-  ('ACT -> enviar_alerta parenteses_i msg parenteses_f namedevice','ACT',5,'p_act','parser.py',212),
-  ('ACT -> enviar_alerta parenteses_i msg virgula observation parenteses_f namedevice','ACT',7,'p_act','parser.py',213),
-  ('ACTION -> ligar','ACTION',1,'p_action','parser.py',225),
-  ('ACTION -> desligar','ACTION',1,'p_action','parser.py',226),
+  ('PROGRAMM -> DEVICES CMDS','PROGRAMM',2,'p_programm','parser.py',115),
+  ('DEVICES -> DEVICE DEVICES','DEVICES',2,'p_devices','parser.py',121),
+  ('DEVICES -> DEVICE','DEVICES',1,'p_devices','parser.py',122),
+  ('DEVICE -> DISPOSITIVO DOIS_PONTOS CHAVES_I COMPONENT_LIST CHAVES_F','DEVICE',5,'p_device','parser.py',141),
+  ('COMPONENT_LIST -> COMPONENT','COMPONENT_LIST',1,'p_component_list','parser.py',150),
+  ('COMPONENT_LIST -> COMPONENT_LIST VIRGULA COMPONENT','COMPONENT_LIST',3,'p_component_list','parser.py',151),
+  ('COMPONENT -> ID','COMPONENT',1,'p_component','parser.py',160),
+  ('COMPONENT -> COMPONENT ID','COMPONENT',2,'p_component','parser.py',161),
+  ('CMDS -> CMDS CMD_TERMINATED','CMDS',2,'p_cmds','parser.py',170),
+  ('CMDS -> CMD_TERMINATED','CMDS',1,'p_cmds','parser.py',171),
+  ('CMD_TERMINATED -> CMD PONTO','CMD_TERMINATED',2,'p_cmd_terminated','parser.py',180),
+  ('CMD -> ATTRIB','CMD',1,'p_cmd','parser.py',186),
+  ('CMD -> OBSACT','CMD',1,'p_cmd','parser.py',187),
+  ('CMD -> ACT','CMD',1,'p_cmd','parser.py',188),
+  ('ATTRIB -> SET ID IGUAL VAR','ATTRIB',4,'p_attrib','parser.py',194),
+  ('OBSACT -> SE OBS ENTAO CMD_TERMINATED','OBSACT',4,'p_obsact','parser.py',200),
+  ('OBSACT -> SE OBS ENTAO CMD_TERMINATED SENAO CMD_TERMINATED','OBSACT',6,'p_obsact','parser.py',201),
+  ('OBS -> ID OPLOGIC VAR','OBS',3,'p_obs','parser.py',210),
+  ('OBS -> ID OPLOGIC VAR AND OBS','OBS',5,'p_obs','parser.py',211),
+  ('VAR -> NUM','VAR',1,'p_var','parser.py',220),
+  ('VAR -> BOOL','VAR',1,'p_var','parser.py',221),
+  ('VAR -> ID','VAR',1,'p_var','parser.py',222),
+  ('ACT -> ACTION ID','ACT',2,'p_act','parser.py',228),
+  ('ACT -> ENVIAR ALERTA STRING ID','ACT',4,'p_act','parser.py',229),
+  ('ACT -> ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F ID','ACT',8,'p_act','parser.py',230),
+  ('ACT -> ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST','ACT',9,'p_act','parser.py',231),
+  ('ACT -> ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST','ACT',11,'p_act','parser.py',232),
+  ('NAMEDEVICELIST -> ID','NAMEDEVICELIST',1,'p_namedevicelist','parser.py',261),
+  ('NAMEDEVICELIST -> NAMEDEVICELIST VIRGULA ID','NAMEDEVICELIST',3,'p_namedevicelist','parser.py',262),
+  ('ACTION -> LIGAR','ACTION',1,'p_action','parser.py',272),
+  ('ACTION -> DESLIGAR','ACTION',1,'p_action','parser.py',273),
 ]

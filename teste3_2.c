@@ -34,10 +34,14 @@ void alertaTodos(char* namedevices[], char* msg, int qtd)
 
 int main(void)
 {
-    char* lampada = "lampada";
-    char* potencia = "potencia";
-    potencia = 100;
-    ligar(lampada);
+    char* monitor = "monitor";
+    char* celular = "celular";
+    char* Termometro = "Termometro";
+    char* temperatura = "temperatura";
+    if (temperatura > 30) {
+        char* broadcast_devices_1[] = { ":" };
+    for (int i = 0; i < 1; i++) { alertaComObs(broadcast_devices_1[i], " Temperatura em ", temperatura); };
+    };
 
     return 0;
 }

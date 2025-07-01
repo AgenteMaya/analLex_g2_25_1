@@ -34,10 +34,22 @@ void alertaTodos(char* namedevices[], char* msg, int qtd)
 
 int main(void)
 {
+    char* celular = "celular";
+    char* movimento = "movimento";
+    char* higr_metro = "higr metro";
+    char* umidade = "umidade";
     char* lampada = "lampada";
     char* potencia = "potencia";
+    char* Monitor = "Monitor";
     potencia = 100;
-    ligar(lampada);
+    if (umidade < 40) {
+        alerta(Monitor, " Ar seco detectado ");
+    };
+    if (movimento == 0) {
+        ligar(lampada);
+    } else {
+        desligar(lampada);
+    };
 
     return 0;
 }
