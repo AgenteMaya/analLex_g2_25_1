@@ -32,24 +32,6 @@ void alertaComObs ( char* namedevice , char* msg , int var )
     printf ("%s %d\\n", msg, var);
 }
 
-void alertaTodos(char* namedevices[], char* msg, int var, int qtd)
-{
-    if (var == INT_MAX)
-    {
-        for (int i = 0; i < qtd; i++)
-        {
-            alerta(namedevices[i], msg);
-        }
-    }
-    else
-    {
-        for (int i = 0; i < qtd; i++)
-        {
-            alertaComObs(namedevices[i], msg, var);
-        }
-    }
-}
-
 int main(void)
 {
 """
@@ -260,9 +242,11 @@ def p_act(p):
         msg = p[4]
         count = len(devices)
         device_array_str = ", ".join([f'"{d}"' for d in devices])
-        p[0] = f'char* broadcast_devices_{p.lineno}[] = {{ {device_array_str} }}; alertaTodos(broadcast_devices_{p.lineno}, "{msg}", 2147483647, {count})'
+        p[0] = (
+            f'char* {array_name}[] = {{ {device_array_str} }};\n'
+            f'    for (int i = 0; i < {count}; i++) {{ alerta({array_name}[i], "{msg}"); }}'
+        )
     else:
-        # alertaComObs(msg, var) para todos
         msg = p[4]
         var = p[6]
         devices = p[11]
@@ -271,7 +255,7 @@ def p_act(p):
         device_array_str = ", ".join([f'"{d}"' for d in devices])
         p[0] = (
             f'char* {array_name}[] = {{ {device_array_str} }};\n'
-            f'    for (int i = 0; i < {count}; i++) {{ alertaTodos({array_name}, "{msg}", {var}), {count}; }}'
+            f'    for (int i = 0; i < {count}; i++) {{ alertaComObs({array_name}[i], "{msg}", {var}); }}'
         )
 
 def p_namedevicelist(p):
@@ -302,17 +286,17 @@ parser = yacc(debug=False)
 
 
 try:
-    with open('teste3.ObsAct', 'r') as arq:
+    with open('teste2.ObsAct', 'r') as arq:
         conteudo = arq.read()
         resultado = parser.parse(conteudo, lexer=lexer)
         if resultado:
             final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
             #print(final_c_code)
-            with open('teste3.c', 'w') as arq_c:
+            with open('teste2.c', 'w') as arq_c:
                 arq_c.write(final_c_code)
-            print("Arquivo 'teste3.c' gerado com sucesso.")
+            print("Arquivo 'teste2.c' gerado com sucesso.")
         else:
             print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
 except FileNotFoundError:
-    print("Erro: O arquivo 'teste3.ObsAct' não foi encontrado.")
+    print("Erro: O arquivo 'teste2.ObsAct' não foi encontrado.")

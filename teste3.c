@@ -49,9 +49,10 @@ int main(void)
     char* celular = "celular";
     char* Termometro = "Termometro";
     float temperatura = 0;
+    temperatura = 32;
     if (temperatura > 30) {
         char* broadcast_devices_1[] = { "monitor", "celular" };
-    for (int i = 0; i < 2; i++) { alertaTodos(broadcast_devices_1, " Temperatura em ", temperatura), 2; };
+    for (int i = 0; i < 2; i++) { alertaComObs(broadcast_devices_1[i], " Temperatura em ", temperatura); };
     };
 
     return 0;

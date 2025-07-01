@@ -38,7 +38,7 @@ void alertaTodos(char* namedevices[], char* msg, int var, int qtd)
     {
         for (int i = 0; i < qtd; i++)
         {
-            alertaComObs(namedevices[i], msg);
+            alertaComObs(namedevices[i], msg, var);
         }
     }
 }

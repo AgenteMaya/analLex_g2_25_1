@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void ligar ( char* namedevice )
 {
@@ -24,11 +25,21 @@ void alertaComObs ( char* namedevice , char* msg , int var )
     printf ("%s %d\n", msg, var);
 }
 
-void alertaTodos(char* namedevices[], char* msg, int qtd)
+void alertaTodos(char* namedevices[], char* msg, int var, int qtd)
 {
-    for (int i = 0; i < qtd; i++)
+    if (var == INT_MAX)
     {
-        alerta(namedevices[i], msg);
+        for (int i = 0; i < qtd; i++)
+        {
+            alerta(namedevices[i], msg);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < qtd; i++)
+        {
+            alertaComObs(namedevices[i], msg, var);
+        }
     }
 }
 
