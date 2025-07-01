@@ -64,7 +64,7 @@ tokens = [
 
 t_DOIS_PONTOS   = r':'
 t_VIRGULA       = r','
-t_PONTO           = r'\.'
+t_PONTO         = r'\.'
 t_PARENTESES_I  = r'\('
 t_PARENTESES_F  = r'\)'
 t_CHAVES_I      = r'{'
@@ -75,7 +75,7 @@ t_OPLOGIC       = r'>=|<=|==|!=|>|<'
 
 def t_BOOL(t):
     r'True|False'
-    t.value = 1 if t.value == 'TRUE' else 0
+    t.value = 1 if t.value == 'True' else 0
     return t
 
 def t_NUM(t):
@@ -263,7 +263,6 @@ def p_namedevicelist(p):
     else:
         p[0] = p[1] + [p[3]]
 
-
 def p_action(p):
     '''
     ACTION : LIGAR
@@ -278,7 +277,6 @@ def p_error(p):
         print("Erro de sintaxe no final do arquivo!")
 
 parser = yacc(debug=False)
-
 
 try:
     for i in range(8):

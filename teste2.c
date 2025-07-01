@@ -38,7 +38,7 @@ int main(void)
     if (umidade < 40) {
         alerta(Monitor, " Ar seco detectado ");
     };
-    if (movimento == 0) {
+    if (movimento == 1) {
         ligar(lampada);
     } else {
         desligar(lampada);
