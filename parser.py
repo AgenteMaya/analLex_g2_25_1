@@ -231,6 +231,7 @@ def p_act(p):
         | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
         | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
     '''
+    print(len(p))
     if len(p) == 3:
         p[0] = f'{p[1]}({p[2]})'
     elif len(p) == 5:
@@ -238,9 +239,10 @@ def p_act(p):
     elif len(p) == 8 and p[5] == ',': 
         p[0] = f'alertaComObs({p[8]}, "{p[4]}", {p[6]})'
     elif len(p) == 10:
-        devices = p[8]
+        devices = p[9]
         msg = p[4]
         count = len(devices)
+        array_name = f"broadcast_devices_{p.lineno(1)}"
         device_array_str = ", ".join([f'"{d}"' for d in devices])
         p[0] = (
             f'char* {array_name}[] = {{ {device_array_str} }};\n'
@@ -286,17 +288,17 @@ parser = yacc(debug=False)
 
 
 try:
-    with open('teste2.ObsAct', 'r') as arq:
+    with open('teste4.ObsAct', 'r') as arq:
         conteudo = arq.read()
         resultado = parser.parse(conteudo, lexer=lexer)
         if resultado:
             final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
             #print(final_c_code)
-            with open('teste2.c', 'w') as arq_c:
+            with open('teste4.c', 'w') as arq_c:
                 arq_c.write(final_c_code)
-            print("Arquivo 'teste2.c' gerado com sucesso.")
+            print("Arquivo 'teste4.c' gerado com sucesso.")
         else:
             print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
 except FileNotFoundError:
-    print("Erro: O arquivo 'teste2.ObsAct' não foi encontrado.")
+    print("Erro: O arquivo 'teste4.ObsAct' não foi encontrado.")
