@@ -8,6 +8,7 @@ c_code_preamble = [
     """
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void ligar ( char* namedevice )
 {
@@ -31,11 +32,21 @@ void alertaComObs ( char* namedevice , char* msg , int var )
     printf ("%s %d\\n", msg, var);
 }
 
-void alertaTodos(char* namedevices[], char* msg, int qtd)
+void alertaTodos(char* namedevices[], char* msg, int var, int qtd)
 {
-    for (int i = 0; i < qtd; i++)
+    if (var == INT_MAX)
     {
-        alerta(namedevices[i], msg);
+        for (int i = 0; i < qtd; i++)
+        {
+            alerta(namedevices[i], msg);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < qtd; i++)
+        {
+            alertaComObs(namedevices[i], msg, var);
+        }
     }
 }
 
@@ -141,8 +152,15 @@ def p_device(p):
     DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I COMPONENT_LIST CHAVES_F
     '''
     decls = []
+    i=0
     for name in p[4]:
-        decls.append(f'    char* {name.replace(" ", "_")} = "{name}";')
+        if not i%2:
+            decls.append(f'    char* {name.replace(" ", "_")} = "{name}";')
+            
+        else:
+            decls.append(f'    float {name.replace(" ", "_")} = 0;')
+        i+=1
+            
     p[0] = '\n'.join(decls) + '\n'
 
 def p_component_list(p):
@@ -197,8 +215,8 @@ def p_attrib(p):
 
 def p_obsact(p):
     '''
-    OBSACT : SE OBS ENTAO ACT
-           | SE OBS ENTAO ACT SENAO ACT
+    OBSACT : SE OBS ENTAO CMD
+           | SE OBS ENTAO CMD SENAO CMD
     '''
     if len(p) == 5:
         p[0] = f'if ({p[2]}) {{\n        {p[4]};\n    }}'
@@ -242,18 +260,18 @@ def p_act(p):
         msg = p[4]
         count = len(devices)
         device_array_str = ", ".join([f'"{d}"' for d in devices])
-        p[0] = f'char* broadcast_devices_{p.lineno}[] = {{ {device_array_str} }}; alertaTodos(broadcast_devices_{p.lineno}, "{msg}", {count})'
+        p[0] = f'char* broadcast_devices_{p.lineno}[] = {{ {device_array_str} }}; alertaTodos(broadcast_devices_{p.lineno}, "{msg}", 2147483647, {count})'
     else:
         # alertaComObs(msg, var) para todos
         msg = p[4]
         var = p[6]
-        devices = p[10]
+        devices = p[11]
         count = len(devices)
         array_name = f"broadcast_devices_{p.lineno(1)}"
         device_array_str = ", ".join([f'"{d}"' for d in devices])
         p[0] = (
             f'char* {array_name}[] = {{ {device_array_str} }};\n'
-            f'    for (int i = 0; i < {count}; i++) {{ alertaComObs({array_name}[i], "{msg}", {var}); }}'
+            f'    for (int i = 0; i < {count}; i++) {{ alertaTodos({array_name}, "{msg}", {var}), {count}; }}'
         )
 
 def p_namedevicelist(p):
@@ -289,11 +307,12 @@ try:
         resultado = parser.parse(conteudo, lexer=lexer)
         if resultado:
             final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
-            with open('teste3_2.c', 'w') as arq_c:
+            #print(final_c_code)
+            with open('teste3.c', 'w') as arq_c:
                 arq_c.write(final_c_code)
-            print("Arquivo 'teste3_2.c' gerado com sucesso.")
+            print("Arquivo 'teste3.c' gerado com sucesso.")
         else:
             print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
 except FileNotFoundError:
-    print("Erro: O arquivo 'teste3_2.ObsAct' não foi encontrado.")
+    print("Erro: O arquivo 'teste3.ObsAct' não foi encontrado.")

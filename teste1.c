@@ -35,7 +35,7 @@ void alertaTodos(char* namedevices[], char* msg, int qtd)
 int main(void)
 {
     char* lampada = "lampada";
-    char* potencia = "potencia";
+    float potencia = 0;
     potencia = 100;
     ligar(lampada);
 
