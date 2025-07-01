@@ -119,16 +119,6 @@ def p_devices(p):
     else:
         p[0] = p[1]
 
-""" def p_device(p):
-    '''
-    DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I ID CHAVES_F
-           | DISPOSITIVO DOIS_PONTOS CHAVES_I ID VIRGULA ID CHAVES_F
-    '''
-    if len(p) == 6:
-        p[0] = f'    char* {p[4]} = "{p[4]}";\n'
-    else:
-        p[0] = f'    char* {p[4]} = "{p[4]}";\n    int {p[6]} = 0;\n' """
-
 def p_device(p):
     '''
     DEVICE : DISPOSITIVO DOIS_PONTOS CHAVES_I COMPONENT_LIST CHAVES_F
@@ -138,11 +128,11 @@ def p_device(p):
     for name in p[4]:
         if not i%2:
             decls.append(f'    char* {name.replace(" ", "_")} = "{name}";')
-            
+
         else:
             decls.append(f'    float {name.replace(" ", "_")} = 0;')
         i+=1
-            
+
     p[0] = '\n'.join(decls) + '\n'
 
 def p_component_list(p):
@@ -227,7 +217,8 @@ def p_act(p):
     '''
     ACT : ACTION ID
         | ENVIAR ALERTA STRING ID
-        | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F ID
+        | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F ID 
+        | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F ID 
         | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
         | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
     '''
@@ -236,7 +227,9 @@ def p_act(p):
         p[0] = f'{p[1]}({p[2]})'
     elif len(p) == 5:
         p[0] = f'alerta({p[4]}, "{p[3]}")'
-    elif len(p) == 8 and p[5] == ',': 
+    elif len(p) == 7:
+        p[0] = f'alerta({p[6]}, "{p[4]}")'
+    elif len(p) < 10 and p[5] == ',': 
         p[0] = f'alertaComObs({p[8]}, "{p[4]}", {p[6]})'
     elif len(p) == 10:
         devices = p[9]
@@ -288,17 +281,22 @@ parser = yacc(debug=False)
 
 
 try:
-    with open('teste4.ObsAct', 'r') as arq:
-        conteudo = arq.read()
-        resultado = parser.parse(conteudo, lexer=lexer)
-        if resultado:
-            final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
-            #print(final_c_code)
-            with open('teste4.c', 'w') as arq_c:
-                arq_c.write(final_c_code)
-            print("Arquivo 'teste4.c' gerado com sucesso.")
-        else:
-            print("Não foi possível gerar o código C devido a erros de sintaxe.")
+    for i in range(8):
+        nameArqObs = 'teste' + str(i+1) + '.ObsAct'
+        nameArqC = 'teste' + str(i+1) + '.c'
+        print(nameArqObs)
+        print(nameArqC)
+        with open(nameArqObs, 'r') as arq:
+            conteudo = arq.read()
+            resultado = parser.parse(conteudo, lexer=lexer)
+            if resultado:
+                final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
+                #print(final_c_code)
+                with open(nameArqC, 'w') as arq_c:
+                    arq_c.write(final_c_code)
+                print("Arquivo {nameArqC} gerado com sucesso.", i)
+            else:
+                print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
 except FileNotFoundError:
-    print("Erro: O arquivo 'teste4.ObsAct' não foi encontrado.")
+    print("Erro: O arquivo {nameArqC} não foi encontrado.")

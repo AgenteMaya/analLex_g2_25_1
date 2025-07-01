@@ -1,0 +1,2 @@
+dispositivo : { Celular }
+enviar alerta (" Hora de acordar !") Celular.

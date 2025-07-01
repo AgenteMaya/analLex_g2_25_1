@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 void ligar ( char* namedevice )
 {
@@ -24,20 +25,11 @@ void alertaComObs ( char* namedevice , char* msg , int var )
     printf ("%s %d\n", msg, var);
 }
 
-void alertaTodos(char* namedevices[], char* msg, int qtd)
-{
-    for (int i = 0; i < qtd; i++)
-    {
-        alerta(namedevices[i], msg);
-    }
-}
-
 int main(void)
 {
-    char* lampada = "lampada";
-    char* potencia = "potencia";
-    potencia = 100;
-    ligar(lampada);
+    char* Termometro = "Termometro";
+    float temperatura = 0;
+    alertaComObs(Termometro, " Temperatura esta em ", temperatura);
 
     return 0;
 }

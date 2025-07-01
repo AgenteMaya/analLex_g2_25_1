@@ -25,24 +25,6 @@ void alertaComObs ( char* namedevice , char* msg , int var )
     printf ("%s %d\n", msg, var);
 }
 
-void alertaTodos(char* namedevices[], char* msg, int var, int qtd)
-{
-    if (var == INT_MAX)
-    {
-        for (int i = 0; i < qtd; i++)
-        {
-            alerta(namedevices[i], msg);
-        }
-    }
-    else
-    {
-        for (int i = 0; i < qtd; i++)
-        {
-            alertaComObs(namedevices[i], msg, var);
-        }
-    }
-}
-
 int main(void)
 {
     char* lampada = "lampada";

@@ -27,21 +27,14 @@ void alertaComObs ( char* namedevice , char* msg , int var )
 
 int main(void)
 {
-    char* celular = "celular";
-    float movimento = 0;
-    char* higr_metro = "higr metro";
-    float umidade = 0;
-    char* lampada = "lampada";
+    char* Termometro = "Termometro";
+    float temperatura = 0;
+    char* ventilador = "ventilador";
     float potencia = 0;
-    char* Monitor = "Monitor";
-    potencia = 100;
-    if (umidade < 40) {
-        alerta(Monitor, " Ar seco detectado ");
-    };
-    if (movimento == 0) {
-        ligar(lampada);
-    } else {
-        desligar(lampada);
+    temperatura = 40;
+    potencia = 90;
+    if (temperatura > 30) {
+        ligar(ventilador);
     };
 
     return 0;
