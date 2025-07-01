@@ -1,3 +1,8 @@
+"""
+Maria Eduarda da Fonseca Gonçalves Santos - 2212985
+Mayara Ramos Damazio - 2210833
+"""
+
 import sys
 import pprint
 
@@ -222,7 +227,6 @@ def p_act(p):
         | ENVIAR ALERTA PARENTESES_I STRING PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
         | ENVIAR ALERTA PARENTESES_I STRING VIRGULA ID PARENTESES_F PARA TODOS DOIS_PONTOS NAMEDEVICELIST
     '''
-    print(len(p))
     if len(p) == 3:
         p[0] = f'{p[1]}({p[2]})'
     elif len(p) == 5:
@@ -232,25 +236,25 @@ def p_act(p):
     elif len(p) < 10 and p[5] == ',': 
         p[0] = f'alertaComObs({p[8]}, "{p[4]}", {p[6]})'
     elif len(p) == 10:
-        devices = p[9]
+        conjuntoStrings = p[9]
         msg = p[4]
-        count = len(devices)
-        array_name = f"broadcast_devices_{p.lineno(1)}"
-        device_array_str = ", ".join([f'"{d}"' for d in devices])
+        qtdArray = len(conjuntoStrings)
+        nomeArray = f"vetorDeDispositivos{p.lineno(1)}"
+        stringsDoArray = ", ".join([f'"{d}"' for d in conjuntoStrings])
         p[0] = (
-            f'char* {array_name}[] = {{ {device_array_str} }};\n'
-            f'    for (int i = 0; i < {count}; i++) {{ alerta({array_name}[i], "{msg}"); }}'
+            f'char* {nomeArray}[] = {{ {stringsDoArray} }};\n'
+            f'    for (int i = 0; i < {qtdArray}; i++) {{ alerta({nomeArray}[i], "{msg}"); }}'
         )
     else:
         msg = p[4]
         var = p[6]
-        devices = p[11]
-        count = len(devices)
-        array_name = f"broadcast_devices_{p.lineno(1)}"
-        device_array_str = ", ".join([f'"{d}"' for d in devices])
+        conjuntoStrings = p[11]
+        qtdArray = len(conjuntoStrings)
+        nomeArray = f"vetorDeDispositivos{p.lineno(1)}"
+        stringsDoArray = ", ".join([f'"{d}"' for d in conjuntoStrings])
         p[0] = (
-            f'char* {array_name}[] = {{ {device_array_str} }};\n'
-            f'    for (int i = 0; i < {count}; i++) {{ alertaComObs({array_name}[i], "{msg}", {var}); }}'
+            f'char* {nomeArray}[] = {{ {stringsDoArray} }};\n'
+            f'    for (int i = 0; i < {qtdArray}; i++) {{ alertaComObs({nomeArray}[i], "{msg}", {var}); }}'
         )
 
 def p_namedevicelist(p):
@@ -282,14 +286,11 @@ try:
     for i in range(8):
         nameArqObs = 'teste' + str(i+1) + '.ObsAct'
         nameArqC = 'teste' + str(i+1) + '.c'
-        print(nameArqObs)
-        print(nameArqC)
         with open(nameArqObs, 'r') as arq:
             conteudo = arq.read()
             resultado = parser.parse(conteudo, lexer=lexer)
             if resultado:
                 final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
-                #print(final_c_code)
                 with open(nameArqC, 'w') as arq_c:
                     arq_c.write(final_c_code)
                 print("Arquivo {nameArqC} gerado com sucesso.", i)

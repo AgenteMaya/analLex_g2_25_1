@@ -33,8 +33,8 @@ int main(void)
     float temperatura = 0;
     temperatura = 32;
     if (temperatura > 30) {
-        char* broadcast_devices_1[] = { "monitor", "celular" };
-    for (int i = 0; i < 2; i++) { alertaComObs(broadcast_devices_1[i], " Temperatura em ", temperatura); };
+        char* vetorDeDispositivos1[] = { "monitor", "celular" };
+    for (int i = 0; i < 2; i++) { alertaComObs(vetorDeDispositivos1[i], " Temperatura em ", temperatura); };
     };
 
     return 0;
