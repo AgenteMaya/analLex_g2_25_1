@@ -9,6 +9,7 @@ import pprint
 from ply.lex import lex
 from ply.yacc import yacc
 
+#lexer
 c_code_preamble = [
     """
 #include <stdio.h>
@@ -293,7 +294,7 @@ try:
                 final_c_code = c_code_preamble[0] + resultado + "\n    return 0;\n}\n"
                 with open(nameArqC, 'w') as arq_c:
                     arq_c.write(final_c_code)
-                print("Arquivo {nameArqC} gerado com sucesso.", i)
+                print("Arquivo {nameArqC} gerado com sucesso.")
             else:
                 print("Não foi possível gerar o código C devido a erros de sintaxe.")
 
